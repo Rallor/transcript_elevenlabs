@@ -9,6 +9,7 @@
 *    BD_PORT=
 
 In your PG DataBase you need to create table and schema:
+
 `CREATE TABLE okko.transcript_call (
 	id bigserial NOT NULL,
 	sentence varchar NULL,
@@ -23,4 +24,3 @@ run `npm install`
 run `npm run start`
 
 Check you database
-![img.png](img.png)
