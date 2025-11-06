@@ -10,10 +10,12 @@
 
 In your PG DataBase you need to create table and schema:
 `CREATE TABLE okko.transcript_call (
-transcript jsonb NULL,
-file_id int4 NULL,
-id bigserial NOT NULL,
-create_at timestamptz DEFAULT now() NULL
+	id bigserial NOT NULL,
+	sentence varchar NULL,
+	speakerid varchar NULL,
+	sentence_id int4 null,
+	file_id int4 NULL,
+	create_at timestamptz DEFAULT now() NULL
 );`
 
 run `npm install` 
