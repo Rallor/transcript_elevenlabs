@@ -16,7 +16,9 @@ id bigserial NOT NULL,
 create_at timestamptz DEFAULT now() NULL
 );`
 
-run npm install
-run npm run
+run `npm install` 
 
+run `npm run start`
+
+Check you database
 ![img.png](img.png)
