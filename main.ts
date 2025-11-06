@@ -6,7 +6,7 @@ import { Client } from 'pg';
 dotenv.config();
 
 
-const call_id_array = [1] //ТУТ спи сок ІД файлів які треба додати транскрибацію
+const call_id_array = [1] //ТУТ список ІД файлів які треба додати транскрибацію
 
 async function writeToDatabase(pgclient:any, data:object) {
     return await pgclient.query(`INSERT INTO okko.transcript_call (transcript,file_id) VALUES ('${JSON.stringify(data).replace(/'/g, "''")}',3) RETURNING *`)
@@ -33,13 +33,13 @@ async function main() {
                 num_speakers:3,
                 language_code:"uk",
                 diarize:"true",
-                cloudStorageUrl: `https://gngitsmtech.blob.core.windows.net/$web/034842d1-c187-4f5b-be2a-e6af1cd1178c_%20380964918295_7030.mp3`,
+                cloudStorageUrl: `https://cc.gng.com.ua/api/storage/download/${call_id}/stream?access_token=${process.env.WEBITEL_APi_KEY}`,
 
             });
-            await writeToDatabase(pgclient, response).then(data => console.log(`Call id ${call_id} create`));
+            await writeToDatabase(pgclient, response).then(data => console.log(`Transcript for call id: ${call_id} create success!`));
         }
     } catch (err) {
-        console.error("Error:", err);
+        console.error(`Error: ${err.body.detail} \n`, JSON.stringify(err));
     } finally {
         await pgclient.end();
     }

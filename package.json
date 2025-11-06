@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --import ./node_modules/tsx/dist/loader.cjs ./main.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,8 @@
     "@elevenlabs/elevenlabs-js": "^2.22.0",
     "dotenv": "^17.2.3",
     "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6"
   }
 }
