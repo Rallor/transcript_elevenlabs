@@ -1,5 +1,6 @@
 // @ts-ignore
 import dotenv from "dotenv";
+import fs from "fs";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import * as process from "node:process";
 import { Client } from 'pg';
@@ -7,12 +8,12 @@ import { parseText } from './Parser'
 dotenv.config();
 
 
-const call_id_array = [184402, 184348, 184300, 184260, 184292] //ТУТ список ІД файлів які треба додати транскрибацію
+const call_id_array = [184292] //ТУТ список ІД файлів які треба додати транскрибацію
 
-async function writeToDatabase(pg_client:any, data:[]) {
+async function writeToDatabase(pg_client:any, data:[], file_id:number) {
     for(const item of data){
          await pg_client.query(`INSERT INTO okko.transcript_call (sentence,file_id,speakerId,sentence_id) VALUES ($1,$2,$3,$4) RETURNING *`,
-             [item.text,3, item.speakerId,item.sentenceID]
+             [item.text,file_id, item.speakerId,item.sentenceID]
     )}
     return "OK"
 }
@@ -38,11 +39,12 @@ async function main() {
                 num_speakers:3,
                 language_code:"uk",
                 diarize:"true",
-                cloudStorageUrl: `https://cc.gng.com.ua/api/storage/download/${call_id}/stream?access_token=${process.env.WEBITEL_APi_KEY}`,
+                file:fs.createReadStream("C:\\Users\\Nazar\\Downloads\\8d61e4f6-6d47-4aac-bc36-616db5e8c6bb_ 380507763288_7030.mp3")
+                //cloudStorageUrl: `https://cc.gng.com.ua/api/storage/download/${call_id}/stream?access_token=${process.env.WEBITEL_APi_KEY}`,
             });
             const parsedText =  parseText(response)
             console.log(parsedText)
-            await writeToDatabase(pg_client, parsedText).then(data => console.log(`Transcript for call id: ${call_id} create success!`));
+            await writeToDatabase(pg_client,parsedText,call_id).then(data => console.log(`Transcript for call id: ${call_id} create success!`));
         }
     } catch (err) {
         console.error(err);
@@ -51,3 +53,4 @@ async function main() {
     }
 }
 main();
+
